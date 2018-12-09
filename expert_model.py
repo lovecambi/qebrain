@@ -308,8 +308,7 @@ def get_iterator_exp(src_dataset,
 
         # bucketing for qe data
         qe_batched_dataset = qe_dataset.apply(
-            tf.contrib.data.group_by_window(
-                # tf.data.experimental.group_by_window(
+            tf.data.experimental.group_by_window(
                 key_func=key_func, reduce_func=reduce_func, window_size_func=window_size_func))
 
     else:

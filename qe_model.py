@@ -365,8 +365,7 @@ def get_iterator_no_hf(src_dataset,
 
         # bucketing for qe data
         qe_batched_dataset = qe_dataset.apply(
-            tf.contrib.data.group_by_window(
-            #tf.data.experimental.group_by_window(
+            tf.data.experimental.group_by_window(
                 key_func=key_func, reduce_func=reduce_func, window_size=qe_batch_size))
 
     else:
@@ -670,8 +669,7 @@ def get_iterator(src_dataset,
 
         # bucketing for qe data
         qe_batched_dataset = qe_dataset.apply(
-            tf.contrib.data.group_by_window(
-            #tf.data.experimental.group_by_window(
+            tf.data.experimental.group_by_window(
                 key_func=key_func, reduce_func=reduce_func, window_size=qe_batch_size))
 
     else:

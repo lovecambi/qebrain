@@ -1,4 +1,4 @@
-export CUDA_VISIBLE_DEVICES=6,7
+export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
 datadir=./data/para
 vocabdir=./data/vocab
 
@@ -7,9 +7,11 @@ mkdir -p $modeldir
 
 rm -rf $modeldir/*
 
+# batch_size is token level.
+# infer_batch_size is example level.
 python expert_model.py \
-      --src=lower.src \
-      --tgt=lower.tgt \
+      --src=lower.de \
+      --tgt=lower.en \
       --train_prefix=${datadir}/train \
       --dev_prefix=${datadir}/dev \
       --test_prefix=${datadir}/dev \
@@ -19,7 +21,7 @@ python expert_model.py \
       --optimizer=lazyadam \
       --warmup_steps=8000 \
       --learning_rate=2.1 \
-      --num_train_steps=75000 \
+      --num_train_steps=500000 \
       --steps_per_stats=100 \
       --steps_per_external_eval=1000 \
       --embedding_size=512 \
@@ -32,5 +34,5 @@ python expert_model.py \
       --bucket_width=5 \
       --avg_ckpts=True \
       --label_smoothing=0.1 \
-      --num_gpus=2
+      --num_gpus=8
 
