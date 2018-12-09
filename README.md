@@ -9,7 +9,7 @@ This repository provides an unofficial released implementation of paper ["Biling
 ## Basic Usage
 1. Download the [parallel datasets](http://www.statmt.org/wmt18/translation-task.html#download) from WMT website.
 2. Preprocessing including tokenization, lowercasing, and vocabulary files.
-3. The parallel data can be stored in `data/para`, and the example vocab files are in folder `data/vocab`.
+3. The parallel data should be put into foler `data/para` (four emtpty files for representative purpose), and the example vocab files are in folder `data/vocab`.
 4. Run `./expert_train.sh` to train bilingual expert model, and due to the large dataset, we provide the multi GPU implementation.
 5. Download the [QE dataset](https://lindat.mff.cuni.cz/repository/xmlui/handle/11372/LRT-2619). An example dataset of sentence level De-En QE task has been downloaded and preprocessed in folder `data/qe`, including human features (If no human feature is prepared, set the argument `--use_hf=False`). 
 6. Run `./qe_train.sh` to train the quality estimation model, and due to the small dataset, we only provide the single GPU implementation.
