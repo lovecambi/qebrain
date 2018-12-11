@@ -536,9 +536,19 @@ def approximate_split(x, num_splits, axis=0):
     Returns:
         a list of num_splits Tensors.
     """
+    multiples = [num_splits] + [1] * (len(x.get_shape()) - 1)
+    x = tf.cond(tf.shape(x)[0] < num_splits, lambda: tf.tile(x, multiples), lambda: x)
     size = shape_list(x)[axis]
     size_splits = [tf.div(size + i, num_splits) for i in range(num_splits)]
     return tf.split(x, size_splits, axis=axis)
+
+
+def fill_until_num_gpus(inputs, num_gpus):
+    outputs = inputs
+    for i in range(num_gpus - 1):
+        outputs = tf.concat([outputs, inputs], 0)
+    outputs = outputs[:num_gpus,]
+    return outputs
 
 
 def _get_embed_device(vocab_size):
