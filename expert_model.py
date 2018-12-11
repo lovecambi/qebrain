@@ -536,8 +536,10 @@ def approximate_split(x, num_splits, axis=0):
     Returns:
         a list of num_splits Tensors.
     """
-    multiples = [num_splits] + [1] * (len(x.get_shape()) - 1)
-    x = tf.cond(tf.shape(x)[0] < num_splits, lambda: tf.tile(x, multiples), lambda: x)
+    def fill_gpus(x, num_gpus):
+        multiples = [num_gpus] + [1] * (len(x.get_shape()) - 1)
+        return tf.tile(x, multiples)
+    x = tf.cond(tf.shape(x)[0] < num_splits, lambda: fill_gpus(x, num_splits), lambda: x)
     size = shape_list(x)[axis]
     size_splits = [tf.div(size + i, num_splits) for i in range(num_splits)]
     return tf.split(x, size_splits, axis=axis)
