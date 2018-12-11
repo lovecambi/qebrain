@@ -491,7 +491,7 @@ def avg_checkpoints(model_dir, num_last_checkpoints, global_step,
         var_values[name] /= len(checkpoints)
 
     with tf.Graph().as_default():
-        tf_vars = [tf.get_variable(v, shape=var_values[v].shape, dtype=var_dtypes[name]) for v in var_values]
+        tf_vars = [tf.get_variable(name, shape=var_values[name].shape, dtype=var_dtypes[name]) for name in var_values]
 
         placeholders = [tf.placeholder(v.dtype, shape=v.shape) for v in tf_vars]
         assign_ops = [tf.assign(v, p) for (v, p) in zip(tf_vars, placeholders)]
@@ -543,14 +543,6 @@ def approximate_split(x, num_splits, axis=0):
     size = shape_list(x)[axis]
     size_splits = [tf.div(size + i, num_splits) for i in range(num_splits)]
     return tf.split(x, size_splits, axis=axis)
-
-
-def fill_until_num_gpus(inputs, num_gpus):
-    outputs = inputs
-    for i in range(num_gpus - 1):
-        outputs = tf.concat([outputs, inputs], 0)
-    outputs = outputs[:num_gpus,]
-    return outputs
 
 
 def _get_embed_device(vocab_size):
@@ -688,7 +680,7 @@ class BilingualExpert(object):
             position_encoder=onmt.layers.position.SinusoidalPositionEncoder())
 
         self.global_step = tf.Variable(0, trainable=False, name="global_step")
-        self.skip_count = tf.Variable(0, trainable=False, name="skil_count")
+        self.skip_count = tf.Variable(0, trainable=False, name="skip_count", dtype=tf.int64)
 
         # data used
         self.source, self.target, self.src_sequence_length, self.tgt_sequence_length = self.iterator.qe_iterator.get_next()
@@ -725,7 +717,7 @@ class BilingualExpert(object):
                                                           variables=self.params,
                                                           colocate_gradients_with_ops=True)
             # also update skip count
-            tf.assign_add(self.skip_count, tf.size(self.src_sequence_length), use_locking=True)
+            tf.assign_add(self.skip_count, tf.size(self.src_sequence_length, out_type=tf.int64), use_locking=True)
 
             # Summary
             self.train_summary = tf.summary.merge([
