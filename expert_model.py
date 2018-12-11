@@ -684,6 +684,7 @@ class BilingualExpert(object):
 
         self.global_step = tf.Variable(0, trainable=False, name="global_step")
         self.skip_count = tf.Variable(0, trainable=False, name="skip_count", dtype=tf.int64)
+        self.reset_sc = tf.assign(self.skip_count, 0)
 
         # data used
         self.source, self.target, self.src_sequence_length, self.tgt_sequence_length = self.iterator.qe_iterator.get_next()
@@ -1343,7 +1344,7 @@ def train(hparams, scope=None, target_session=""):
             # if avg_ckpts:
             #     run_avg_external_eval(infer_model, infer_sess, model_dir, hparams, summary_writer, global_step)
 
-            train_sess.run(train_model.iterator.initializer, feed_dict={train_model.skip_count_placeholder: 0})
+            train_sess.run([train_model.iterator.initializer, train_model.model.reset_sc], feed_dict={train_model.skip_count_placeholder: 0})
             continue
 
         # Process step_result, accumulate stats, and write summary
