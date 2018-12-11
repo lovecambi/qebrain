@@ -847,7 +847,7 @@ def load_expert_weights(exp_model_dir, model, session):
     var_values = {}
     for name, shape in var_list:
         if name != "global_step" and not "OptimizeLoss" in name and not "skip_count" in name:
-            print_out("  loading weights of variable %s with shape %s", (name, str(shape)))
+            print_out("  loading weights of variable %s with shape %s" % (name, str(shape)))
             var_values[name+":0"] = reader.get_tensor(name)
 
     loaded_vars = [var for var in model.exp_params if var.name in var_values]
@@ -2043,6 +2043,7 @@ def create_hparams(flags):
         embedding_size=flags.embedding_size,
         num_units=flags.num_units,
         rnn_units=flags.rnn_units,
+        rnn_layers=flags.rnn_layers,
         num_layers=flags.num_layers,  # Compatible
         num_encoder_layers=(flags.num_encoder_layers or flags.num_layers),
         num_decoder_layers=(flags.num_decoder_layers or flags.num_layers),

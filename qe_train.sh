@@ -6,7 +6,7 @@ exp_modeldir=./saved_exp_model/best_BLEU  # or avg_best_BLEU if bilingual expert
 modeldir=./saved_qe_model
 mkdir -p $modeldir
 
-#rm -rf $modeldir/*
+rm -rf $modeldir/*
 
 python qe_model.py \
       --src=lower.de \

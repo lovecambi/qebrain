@@ -25,3 +25,6 @@ If you use this code for your research, please cite our papers.
   year={2018}
 }
 ```
+
+## Reference
+Some of the utility functions are referred from [TensorFlow NMT](https://github.com/tensorflow/nmt).
