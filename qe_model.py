@@ -1226,8 +1226,8 @@ class QEModel(object):
         bw_decoder_emb_inp = tf.reverse_sequence(
             fw_decoder_emb_inp,
             self.tgt_sequence_length,
-            batch_dim=0,
-            seq_dim=1)
+            batch_axis=0,
+            seq_axis=1)
 
         # Decoder
         with tf.variable_scope("decoder"):
@@ -1260,8 +1260,8 @@ class QEModel(object):
             bw_outputs_rev = tf.reverse_sequence(
                 bw_outputs,
                 self.tgt_sequence_length,
-                batch_dim=0,
-                seq_dim=1)
+                batch_axis=0,
+                seq_axis=1)
 
             shift_outputs = shift_concat(
                 (fw_outputs, bw_outputs_rev),
