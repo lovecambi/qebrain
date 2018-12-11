@@ -846,15 +846,9 @@ def load_expert_weights(exp_model_dir, model, session):
 
     var_values = {}
     for name, shape in var_list:
-        if name != "global_step" and not "optim" in name and not "skip_count" in name:
-            if 'inputter_0/w_embs' in name:
-                var_values["embeddings/encoder/embedding_encoder:0"] = reader.get_tensor(name)
-            elif 'inputter_1/w_embs' in name:
-                var_values["embeddings/decoder/embedding_decoder:0"] = reader.get_tensor(name)
-            elif 'inputter/w_embs' in name:
-                var_values["embeddings/embedding_share:0"] = reader.get_tensor(name)
-            else:
-                var_values[name+":0"] = reader.get_tensor(name)
+        if name != "global_step" and not "OptimizeLoss" in name and not "skip_count" in name:
+            print_out("  loading weights of variable %s with shape %s", (name, str(shape)))
+            var_values[name+":0"] = reader.get_tensor(name)
 
     loaded_vars = [var for var in model.exp_params if var.name in var_values]
     placeholders = [tf.placeholder(var.dtype, shape=var.shape) for var in loaded_vars]

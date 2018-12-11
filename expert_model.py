@@ -485,7 +485,10 @@ def avg_checkpoints(model_dir, num_last_checkpoints, global_step,
         for name in var_values:
             tensor = reader.get_tensor(name)
             var_dtypes[name] = tensor.dtype
-            var_values[name] += tensor
+            if not "skip_count" in name:
+                var_values[name] += tensor
+            else:
+                var_values[name] = tensor
 
     for name in var_values:
         var_values[name] /= len(checkpoints)
@@ -717,7 +720,7 @@ class BilingualExpert(object):
                                                           variables=self.params,
                                                           colocate_gradients_with_ops=True)
             # also update skip count
-            tf.assign_add(self.skip_count, tf.size(self.src_sequence_length, out_type=tf.int64), use_locking=True)
+            self.update_sc = tf.assign_add(self.skip_count, tf.size(self.src_sequence_length, out_type=tf.int64), use_locking=True)
 
             # Summary
             self.train_summary = tf.summary.merge([
@@ -874,6 +877,7 @@ class BilingualExpert(object):
     def train(self, sess):
         assert self.mode == tf.contrib.learn.ModeKeys.TRAIN
         return sess.run([self.update,
+                         self.update_sc,
                          self.train_loss,
                          self.train_summary,
                          self.global_step,
@@ -1221,7 +1225,7 @@ def init_stats():
 
 def update_stats(stats, start_time, step_result):
     """Update stats: write summary and accumulate statistics."""
-    (_, step_loss, step_summary, global_step, grad_norm, learning_rate) = step_result
+    (_, _, step_loss, step_summary, global_step, grad_norm, learning_rate) = step_result
     # Update statistics
     stats["step_time"] += (time.time() - start_time)
     stats["exp_loss"] += step_loss
