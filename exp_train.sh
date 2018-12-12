@@ -34,5 +34,7 @@ python expert_model.py \
       --bucket_width=5 \
       --avg_ckpts=True \
       --label_smoothing=0.1 \
+      --src_max_len=70 \
+      --tgt_max_len=70 \
       --num_gpus=8
 

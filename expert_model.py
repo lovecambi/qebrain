@@ -32,6 +32,7 @@ SOS = "<s>"
 EOS = "</s>"
 UNK = "<unk>"
 VOCAB_SIZE_THRESHOLD_CPU = 50000
+SHUFFLE_BUFFER_SIZE = 1000000
 
 
 def print_out(s, f=None, new_line=True):
@@ -243,7 +244,7 @@ def get_iterator_exp(src_dataset,
     if skip_count is not None:
         qe_dataset = qe_dataset.skip(skip_count)
 
-    qe_dataset = qe_dataset.shuffle(output_buffer_size, random_seed, reshuffle_each_iteration)
+    qe_dataset = qe_dataset.shuffle(SHUFFLE_BUFFER_SIZE, random_seed, reshuffle_each_iteration)
 
     qe_dataset = qe_dataset.map(
         lambda src, tgt: (
