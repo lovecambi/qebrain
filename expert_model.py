@@ -628,6 +628,9 @@ class BilingualExpert(object):
                  reverse_target_vocab_table=None,
                  scope=None):
 
+        self.devices = [x.name for x in device_lib.list_local_devices() if x.device_type == "GPU"]
+        assert len(self.devices) == hparams.num_gpus
+
         self.iterator = iterator
         self.mode = mode
 
@@ -765,8 +768,7 @@ class BilingualExpert(object):
                 tgt_len_shards = approximate_split(self.tgt_sequence_length, hparams.num_gpus)
 
                 loss_shards = []
-                devices = [x.name for x in device_lib.list_local_devices() if x.device_type == "GPU"]
-                for i, device in enumerate(devices):
+                for i, device in enumerate(self.devices):
                     with tf.name_scope("parallel_{}".format(i)):
                         with tf.variable_scope(tf.get_variable_scope(), reuse=True if i > 0 else None):
                             with tf.device(device):
