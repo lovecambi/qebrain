@@ -866,7 +866,7 @@ class BilingualExpert(object):
             logits = self.output_layer(_pre_qefv)
             sampled_ids = tf.cast(tf.argmax(logits, axis=-1), tf.int32)
 
-        return logits, sampled_ids
+        return logits, sampled_ids[:, 1:]
 
     def _compute_loss(self, logits, tgt, tgt_seq_lens):
         crossent, normalizer, _ = onmt.utils.losses.cross_entropy_sequence_loss(
