@@ -24,6 +24,14 @@ If you use this code for your research, please cite our papers.
   journal={arXiv preprint arXiv:1807.09433},
   year={2018}
 }
+
+@inproceedings{wang2018alibaba,
+  title={Alibaba Submission for WMT18 Quality Estimation Task},
+  author={Wang, Jiayi and Fan, Kai and Li, Bo and Zhou, Fengming and Chen, Boxing and Shi, Yangbin and Si, Luo},
+  booktitle={Proceedings of the Third Conference on Machine Translation: Shared Task Papers},
+  pages={809--815},
+  year={2018}
+}
 ```
 
 ## Reference
