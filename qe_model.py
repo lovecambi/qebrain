@@ -920,7 +920,7 @@ def avg_checkpoints(model_dir, num_last_checkpoints, global_step,
         var_values[name] /= len(checkpoints)
 
     with tf.Graph().as_default():
-        tf_vars = [tf.get_variable(name, shape=var_values[name].shape, dtype=var_dtypes[name]) for v in var_values]
+        tf_vars = [tf.get_variable(name, shape=var_values[name].shape, dtype=var_dtypes[name]) for name in var_values]
 
         placeholders = [tf.placeholder(v.dtype, shape=v.shape) for v in tf_vars]
         assign_ops = [tf.assign(v, p) for (v, p) in zip(tf_vars, placeholders)]
