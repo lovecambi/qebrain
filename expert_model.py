@@ -1394,7 +1394,7 @@ def train(hparams, scope=None, target_session=""):
         os.path.join(out_dir, "exp.ckpt"),
         global_step=global_step)
 
-    print_out("# Done training!", time.time() - start_train_time)
+    print_out("# Done training, time %ds !" % (time.time() - start_train_time))
 
     summary_writer.close()
     return global_step
