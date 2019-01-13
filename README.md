@@ -7,7 +7,7 @@ This repository provides an unofficial released implementation of paper ["Biling
 2. OpenNMT-tf 1.15 `pip install OpenNMT-tf`
 We used the following OpenNMT-tf APIs, so the latest OpenNMT-tf may also work if they are not changed.
     * `encoders.self_attention_encoder.SelfAttentionEncoder`
-    * `onmt.layers.position.SinusoidalPositionEncoder`
+    * `layers.position.SinusoidalPositionEncoder`
     * `decoders.self_attention_decoder.SelfAttentionDecoder`
     * `utils.losses.cross_entropy_sequence_loss`
     * `encoders.BidirectionalRNNEncoder`
